@@ -97,6 +97,10 @@ export default function useGameLogic() {
         return JSON.stringify(b1) === JSON.stringify(b2);
     }
 
+    function checkWin(grid) {
+        return grid.some((row) => row.includes(2048));
+    }
+
     function move(direction) {
 
         let newBoard = JSON.parse(JSON.stringify(board));
@@ -109,6 +113,10 @@ export default function useGameLogic() {
         if (!boardsEqual(board, newBoard)) {
             newBoard = addTwo(newBoard);
             setBoard(newBoard);
+        }
+
+        if (checkWin(newBoard)) {
+            setTimeout(() => alert("🎉 You Won!"), 100);
         }
     }
 
