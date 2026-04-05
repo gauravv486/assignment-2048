@@ -1,37 +1,33 @@
-export default function Tile({ value }) {
-
-    const getStyle = (num) => {
-        const styles = {
-            0: { background: "#cdc1b5", color: "transparent" },
-
-            2: { background: "#eee4da", color: "#727371" },
-            4: { background: "#ece0ca", color: "#727371" },
-
-            8: { background: "#f4b17a", color: "white" },
-            16: { background: "#f59575", color: "white" },
-            32: { background: "#f57c5f", color: "white" },
-            64: { background: "#f65d3b", color: "white" },
-
-            128: { background: "#edce71", color: "white" },
-            256: { background: "#edcc63", color: "white" },
-            512: { background: "#edc651", color: "white" },
-
-            1024: { background: "#eec744", color: "white" },
-            2048: { background: "#ecc230", color: "white" },
-
-            4096: { background: "#fe3d3d", color: "white" },
-            8192: { background: "#ff2020", color: "white" },
-        };
-
-        return styles[num] || { background: "#3c3a32", color: "white" };
+const getTileStyle = (value) => {
+    const styles = {
+        0: "bg-[#cdc1b4]",
+        2: "bg-[#eee4da] text-[#776e65]",
+        4: "bg-[#ede0c8] text-[#776e65]",
+        8: "bg-[#f2b179] text-white",
+        16: "bg-[#f59563] text-white",
+        32: "bg-[#f67c5f] text-white",
+        64: "bg-[#f65e3b] text-white",
+        128: "bg-[#edcf72] text-white",
+        256: "bg-[#edcc61] text-white",
+        512: "bg-[#edc850] text-white",
+        1024: "bg-[#edc53f] text-white",
+        2048: "bg-[#edc22e] text-white",
     };
 
-    const style = getStyle(value);
+    return styles[value] || "bg-black text-white";
+};
 
+export default function Tile({ value }) {
     return (
         <div
-            style={style}
-            className="aspect-square flex items-center justify-center font-bold text-lg md:text-2xl rounded"
+            className={`
+        aspect-square 
+        flex items-center justify-center 
+        rounded-md 
+        font-bold 
+        text-lg md:text-2xl
+        ${getTileStyle(value)}
+      `}
         >
             {value !== 0 ? value : ""}
         </div>
