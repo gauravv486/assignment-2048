@@ -158,6 +158,15 @@ export default function useGameLogic() {
         }
     }
 
+    function resetGame() {
+        localStorage.removeItem("2048-game");
+        setScore(0);
+
+        let newBoard = createEmptyBoard();
+        newBoard = addTwo(addTwo(newBoard));
+        setBoard(newBoard);
+    }
+
     useEffect(() => {
         function handleKey(e) {
             if (e.code === "ArrowLeft") move("LEFT");
@@ -170,7 +179,7 @@ export default function useGameLogic() {
         return () => window.removeEventListener("keyup", handleKey);
     }, [board]);
 
-    return { board, score , move };
+    return { board, score, move, resetGame };
 }
 
 
