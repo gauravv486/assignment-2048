@@ -1,0 +1,106 @@
+import { useState, useEffect } from "react";
+
+const SIZE = 4;
+
+const createEmptyBoard = () => {
+    return Array(SIZE).fill(0).map(() => Array(SIZE).fill(0));
+}
+
+export default function useGameLogic() {
+
+    const [board, setBoard] = useState(createEmptyBoard());
+    const [score, setScore] = useState(0);
+
+
+    function filterZero(row) {
+        return row.filter((n) => n !== 0);
+    }
+
+    function slide(row) {
+        row = filterZero(row);
+        for (let i = 0; i < row.length - 1; i++) {
+            if (row[i] === row[i + 1]) {
+                row[i] *= 2;
+                row[i + 1] = 0;
+                setScore((prev) => prev + row[i]);
+            }
+        }
+        row = filterZero(row);
+        while (row.length < SIZE) row.push(0);
+        return row;
+    }
+
+    function slideLeft(grid) {
+        return grid.map((row) => slide(row));
+    }
+
+    function slideRight(grid) {
+        return grid.map((row) => slide([...row].reverse()).reverse());
+    }
+
+    function slideUp(grid) {
+
+        let newGrid = createEmptyBoard();
+
+        for (let c = 0; c < SIZE; c++) {
+            let col = grid.map((r) => r[c]);
+            col = slide(col);
+            for (let r = 0; r < SIZE; r++) {
+                newGrid[r][c] = col[r];
+            }
+        }
+
+        return newGrid;
+    }
+
+    function slideDown(grid) {
+
+        let newGrid = createEmptyBoard();
+
+        for (let c = 0; c < SIZE; c++) {
+            let col = grid.map((r) => r[c]).reverse();
+            col = slide(col).reverse();
+            for (let r = 0; r < SIZE; r++) {
+                newGrid[r][c] = col[r];
+            }
+        }
+
+        return newGrid;
+    }
+
+    function boardsEqual(b1, b2) {
+        return JSON.stringify(b1) === JSON.stringify(b2);
+    }
+
+    function move(direction) {
+
+        let newBoard = JSON.parse(JSON.stringify(board));
+
+        if (direction === "LEFT") newBoard = slideLeft(newBoard);
+        if (direction === "RIGHT") newBoard = slideRight(newBoard);
+        if (direction === "UP") newBoard = slideUp(newBoard);
+        if (direction === "DOWN") newBoard = slideDown(newBoard);
+
+        if (!boardsEqual(board, newBoard)) {
+            newBoard = addTwo(newBoard);
+            setBoard(newBoard);
+        }
+    }
+
+    useEffect(() => {
+        function handleKey(e) {
+            if (e.code === "ArrowLeft") move("LEFT");
+            if (e.code === "ArrowRight") move("RIGHT");
+            if (e.code === "ArrowUp") move("UP");
+            if (e.code === "ArrowDown") move("DOWN");
+        }
+
+        window.addEventListener("keyup", handleKey);
+        return () => window.removeEventListener("keyup", handleKey);
+    }, [board]);
+
+    return { board, score };
+}
+
+
+
