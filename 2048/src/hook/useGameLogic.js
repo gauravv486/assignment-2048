@@ -11,6 +11,31 @@ export default function useGameLogic() {
     const [board, setBoard] = useState(createEmptyBoard());
     const [score, setScore] = useState(0);
 
+    useEffect(() => {
+        if (board.flat().every((v) => v === 0)) {
+            let newBoard = createEmptyBoard();
+            newBoard = addTwo(addTwo(newBoard));
+            setBoard(newBoard);
+        }
+    }, []);
+
+    function addTwo(grid) {
+        let empty = [];
+
+        for (let r = 0; r < SIZE; r++) {
+            for (let c = 0; c < SIZE; c++) {
+                if (grid[r][c] === 0) empty.push([r, c]);
+            }
+        }
+
+        if (empty.length === 0) return grid;
+
+        const [r, c] = empty[Math.floor(Math.random() * empty.length)];
+        grid[r][c] = 2;
+
+        return JSON.parse(JSON.stringify(grid));
+    }
+
 
     function filterZero(row) {
         return row.filter((n) => n !== 0);
