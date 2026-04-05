@@ -170,7 +170,7 @@ export default function useGameLogic() {
         return () => window.removeEventListener("keyup", handleKey);
     }, [board]);
 
-    return { board, score };
+    return { board, score , move };
 }
 
 
