@@ -101,6 +101,26 @@ export default function useGameLogic() {
         return grid.some((row) => row.includes(2048));
     }
 
+    function canMerge(grid) {
+        for (let r = 0; r < SIZE; r++) {
+            for (let c = 0; c < SIZE; c++) {
+                let val = grid[r][c];
+
+                if (c < SIZE - 1 && grid[r][c + 1] === val) return true;
+                if (r < SIZE - 1 && grid[r + 1][c] === val) return true;
+            }
+        }
+        return false;
+    }
+
+    function hasEmptyCell(grid) {
+        return grid.some((row) => row.includes(0));
+    }
+
+    function isGameOver(grid) {
+        return !hasEmptyCell(grid) && !canMerge(grid);
+    }
+
     function move(direction) {
 
         let newBoard = JSON.parse(JSON.stringify(board));
@@ -112,11 +132,16 @@ export default function useGameLogic() {
 
         if (!boardsEqual(board, newBoard)) {
             newBoard = addTwo(newBoard);
-            setBoard(newBoard);
-        }
 
-        if (checkWin(newBoard)) {
-            setTimeout(() => alert("🎉 You Won!"), 100);
+            if (checkWin(newBoard)) {
+                setTimeout(() => alert("You Won!"), 100);
+            }
+
+            if (isGameOver(newBoard)) {
+                setTimeout(() => alert("Game Over"), 100);
+            }
+
+            setBoard(newBoard);
         }
     }
 
