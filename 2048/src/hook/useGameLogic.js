@@ -148,6 +148,7 @@ export default function useGameLogic() {
 
             if (checkWin(newBoard)) {
                 setTimeout(() => alert("You Won!"), 100);
+
             }
 
             if (isGameOver(newBoard)) {

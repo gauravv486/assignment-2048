@@ -7,7 +7,7 @@ const App = () => {
   const { board, score, move , resetGame} = useGame2048();
 
   return (
-    <div className="flex flex-col items-center mt-6">
+    <div className="flex flex-col items-center mt-2">
       <h1 className="text-3xl font-bold">2048</h1>
 
       <Score score={score} />
@@ -20,7 +20,6 @@ const App = () => {
       </button>
 
       <Board board={board} />
-
       <PhoneControls onMove={move} />
 
     </div>
