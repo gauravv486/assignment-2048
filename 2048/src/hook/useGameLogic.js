@@ -8,8 +8,17 @@ const createEmptyBoard = () => {
 
 export default function useGameLogic() {
 
-    const [board, setBoard] = useState(createEmptyBoard());
-    const [score, setScore] = useState(0);
+    const [board, setBoard] = useState(() => {
+        const saved = localStorage.getItem("2048-game");
+        if (saved) return JSON.parse(saved).board;
+        return createEmptyBoard();
+    });
+
+    const [score, setScore] = useState(() => {
+        const saved = localStorage.getItem("2048-game");
+        if (saved) return JSON.parse(saved).score;
+        return 0;
+    });
 
     useEffect(() => {
         if (board.flat().every((v) => v === 0)) {
