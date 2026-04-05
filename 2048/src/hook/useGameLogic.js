@@ -19,6 +19,10 @@ export default function useGameLogic() {
         }
     }, []);
 
+    useEffect(() => {
+        localStorage.setItem("2048-game", JSON.stringify({ board, score }));
+    }, [board, score]);
+
     function addTwo(grid) {
         let empty = [];
 
